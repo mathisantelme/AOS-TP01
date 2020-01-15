@@ -76,8 +76,6 @@ Tout ces fichiers doivent contenir le meme `targetNamespace` (http://mediatheque
 
 ## Contraintes d'identité
 
-### *Partie 1*
-
 Les contraintes du schéma
 
 1. Deux commandes distinctes ne peuvent pas avoir la meme date **et** la meme heure
