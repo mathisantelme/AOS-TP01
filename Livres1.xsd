@@ -1,0 +1,16 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://litterature.org" xmlns:bib="http://litterature.org">
+    <element name="livre">
+        <complexType>
+            <sequence>
+                <element ref="bib:chapitre"/>
+            </sequence>
+        </complexType>
+    </element>
+    
+    <element name="chapitre"/>
+</schema>
+
+<!-- 
+    - il manque un espace de nom par défaut pour définir le schémas
+    - chapitre et livre sont des fils direct de schemas (il faut donc que schemas possède un attribut targetnamespace, afin que les deux éléments fassent partie du meme espace de nom)
+-->
