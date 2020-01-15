@@ -1,0 +1,31 @@
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://mediatheque.org" 
+    targetNamespace="http://mediatheque.org"
+    elementFormDefault="qualified" 
+>
+
+    <xsd:include schemaLocation="element.xsd"/>
+
+    <!-- On définit le type TypeVideo -->
+    <xsd:complexType name="TypeVideo">
+    <!-- On peut choisir autant de fois que l'on veut entre les deux éléments (permet de remplir la deuxième contrainte) -->
+        <xsd:choice maxOccurs="unbounded">
+            <xsd:element name="dvd" type="TypeEltVideo"/>
+            <xsd:element name="videok7" type="TypeEltVideo"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <!-- On définit le type TypeEltVideo en héritant de TypeEltMultimedia-->
+    <xsd:complexType name="TypeEltVideo">
+        <xsd:complexContent>
+            <xsd:extension base="TypeEltMultimedia">
+                <xsd:sequence>
+                    <xsd:element name="annee" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="realisateur" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,21 @@
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://mediatheque.org" 
+    targetNamespace="http://mediatheque.org"
+    elementFormDefault="qualified" 
+>
+
+    <xsd:include schemaLocation="video.xsd"/>
+    <xsd:include schemaLocation="musique.xsd"/>
+
+    <!-- Définition de l'élément racine ======================================================================================  -->
+    <xsd:element name="mediatheque">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="musique" type="TypeMusique" minOccurs="0"/>
+                <xsd:element name="video" type="TypeVideo" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

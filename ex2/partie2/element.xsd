@@ -1,0 +1,24 @@
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://mediatheque.org" 
+    targetNamespace="http://mediatheque.org"
+    elementFormDefault="qualified" 
+>
+    <!-- On définit type complexe TypeEltMultimedia qui sert de base pour les types TypeCD et TypeEltVideo-->
+    <xsd:complexType name="TypeEltMultimedia">
+
+        <xsd:sequence>
+            <xsd:element name="titre" type="xsd:string"/>
+        </xsd:sequence>
+
+        <!-- On définit l'attribut id qui est une restriction du type xsd:string grace à une expression régulière -->
+        <xsd:attribute name="id" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="\c{3}-\d{3}"></xsd:pattern>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+
+    </xsd:complexType>
+</xsd:schema>

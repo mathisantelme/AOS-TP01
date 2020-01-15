@@ -1,0 +1,54 @@
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://mediatheque.org" 
+    targetNamespace="http://mediatheque.org"
+    elementFormDefault="qualified" 
+>
+    <xsd:include schemaLocation="element.xsd"/>
+
+    <!-- On définit le type TypeMusique -->
+    <xsd:complexType name="TypeMusique">
+        <xsd:sequence>
+            <xsd:element name="contenu" type="xsd:string"/>
+            <xsd:element name="cd" type="TypeCD" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- On définit le type TypeCD en héritant de TypeEltMultimedia -->
+    <xsd:complexType name="TypeCD">
+        <xsd:complexContent>
+            <xsd:extension base="TypeEltMultimedia">
+                <xsd:sequence>
+                    
+                    <!-- On définit un choix entre groupe et artiste (un seul des deux peut etre présent -->
+                    <xsd:choice>
+                        <xsd:element name="groupe" type="xsd:string"/>
+                        <xsd:element name="artiste" type="TypeArtiste"/>
+                    </xsd:choice>
+
+                    <!-- On défini l'élément chanson (l'élément chanson peut apparaitre autant de fois qu'il souhaite) -->
+                    <!-- On défini une forme de type xsd:string qui contient un attribut temporel -->
+                    <xsd:element name="chanson" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:simpleContent>
+                                <xsd:extension base="xsd:string">
+                                    <xsd:attribute name="duree" type="xsd:time"/>
+                                </xsd:extension>
+                            </xsd:simpleContent>
+                        </xsd:complexType>
+                    </xsd:element>
+                
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- Définition du type TypeArtiste -->
+    <xsd:complexType name="TypeArtiste">
+        <xsd:sequence>
+            <xsd:element name="nom" type="xsd:string"/>
+            <xsd:element name="prenom" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>
