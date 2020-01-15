@@ -1,5 +1,4 @@
-<!-- TODO: ajouter les images de validation des fichiers xsd à la fin de chaque section -->
-# Architecture Orienté Services - Compte Rendu TP1
+# Architecture Orienté Services - Compte Rendu TP1 *ANTELME Mathis*
 
 ## Les espaces de noms
 
@@ -219,3 +218,7 @@ Ensuite on définit un fichier **XML** qui illustre les possibilités suivante d
 </event>
 ```
 *ex4/ressources/agenda.xml*
+
+### Manipulation des documents **XML** à partir de l'API **JAXB**
+
+On écrit un programme java qui permet de sérializer et désérializer les données XML que l'on viens de générer dans la partie précédente. Du au manque temps, cette partie est incomplète au moment du dépot, cependant elle sera complété sur le repository [git](https://github.com/mathisantelme/AOS-TP01).
