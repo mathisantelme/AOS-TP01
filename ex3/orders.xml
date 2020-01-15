@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<orders
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="orders.xsd"
+>
+    
+    <order date="2008-01-08" time="17:32:28" customer="234">
+        <product serial="101-XX" number="12" />
+        <product serial="102-XY" number="23" />
+    </order>
+
+    <order date="2008-01-09" time="17:32:28" customer="984">
+        <product serial="101-XX" number="32" />
+    </order>
+
+    <catalog>
+        <product serial="101-XX">Product n◦ 1</product>
+        <product serial="101-ZA">Product n◦ 2</product>
+        <product serial="102-XY">Product n◦ 3</product>
+    </catalog>
+
+    <customers>
+        <customer id="234">
+            <name>Merlin</name>
+        </customer>
+        <customer id="984">
+            <name>John</name>
+        </customer>
+    </customers>
+    
+</orders>

@@ -73,3 +73,70 @@ Pour séparer le schéma en plusieurs fichiers distincts, on va utiliser 4 fichi
 Tout ces fichiers doivent contenir le meme `targetNamespace` (http://mediatheque.org) afin de pouvoir référencer les éléments définis dans d'autres fichiers. Il suffit d'inclure les fichiers nécessaire pour ces références afin de créer le schéma correspondant à celui défini dans la première partie de cet exercice.
 
 ---
+
+## Contraintes d'identité
+
+### *Partie 1*
+
+Les contraintes du schéma
+
+1. Deux commandes distinctes ne peuvent pas avoir la meme date **et** la meme heure
+2. Tous les produits référencés dans les commandes **doivent** etre présents dans le catalogue
+3. Deux produits distincts dans le catalogue ne peuvent pas avoir le meme numéro de série
+4. Chaque client associé à une commande doit exister dans l'élément customers
+5. Chaque client à un identifiant unique
+
+Pour résoudre la première contrainte on utilise les attributs date et heure comme index pour les commandes, de ce fait, il ne peut exister deux commandes possèdant la meme date et heure.
+
+```xml
+<xsd:key name="unicite_commande">
+    <xsd:selector xpath="./order"/>
+    <xsd:field xpath="@date"/>
+    <xsd:field xpath="@time"/>
+</xsd:key>
+```
+
+*ex3/orders.xsd ligne 20*
+
+Pour la contrainte numéro 2, on référence chaque produit présents dans les commande par leur numéro de série dans le catalogue (cf. contrainte n°3).
+
+```xml
+<xsd:keyref name="reference_produit_commande" refer="unicite_produit_catalogue">
+    <xsd:selector xpath="./order/product"/>
+    <xsd:field xpath="@serial"/>
+</xsd:keyref>
+```
+
+*ex3/orders.xsd ligne 29*
+
+Pour remplir la troisième contrainte on indexe les produits du catalogue avec leur numéro de série, ce qui permet de rendre chaque numéro de série unique.
+
+```xml
+<xsd:key name="unicite_produit_catalogue">
+    <xsd:selector xpath="./catalog/product"/>
+    <xsd:field xpath="@serial"/>
+</xsd:key>
+```
+
+*ex3/orders.xsd ligne 37*
+
+Afin d'associer les clients présent dans les commandes a ceux présent dans l'élément `customers`, on utilise la meme technique que dans la deuxième contrainte. On référence donc chaque client a son identifiant présent dans `customers`.
+
+```xml
+<xsd:keyref name="reference_customer_commande" refer="unicite_customer">
+    <xsd:selector xpath="./order"/>
+    <xsd:field xpath="@customer"/>
+</xsd:keyref>
+```
+
+*ex3/orders.xsd ligne 44*
+
+Pour que chaque client ai un identifiant unique, on utilise la meme méthode que dans la troisième contrainte, a savoir indexer les client par rapport à leur identifiant afin de le rendre unique.
+
+```xml
+<xsd:unique name="unicite_customer">
+    <xsd:selector xpath="./customers/customer" />
+    <xsd:field xpath="@id" />
+</xsd:unique>
+```
+*ex3/orders.xsd ligne 52*

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+>
+    <!-- On définit l'élément orders -->
+    <xsd:element name="orders">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="order" type="order" maxOccurs="unbounded"/>
+                <xsd:element name="catalog" type="catalog"/>
+                <xsd:element name="customers" type="customers" />
+            </xsd:sequence>
+        </xsd:complexType>
+        
+
+        <!-- Définition des contraintes =================================================================== -->
+        <!-- Contrainte numéro 1 -->
+        <!-- Deux commandes ne peuvent pas avoir la meme date ET heure -->
+        <xsd:key name="unicite_commande">
+            <!-- On indexe les commandes avec des clefs uniques (date, heure) -->
+            <xsd:selector xpath="./order"/>
+            <xsd:field xpath="@date"/>
+            <xsd:field xpath="@time"/>
+        </xsd:key>
+        
+        <!-- Contrainte numéro 2 -->
+        <!-- Les produits présent dans les commandes doivent etre présent dans le catalogue -->
+        <xsd:keyref name="reference_produit_commande" refer="unicite_produit_catalogue">
+            <!-- chaque produit est référencé par rapport à son numéro de série dans le catalogue -->
+            <xsd:selector xpath="./order/product"/>
+            <xsd:field xpath="@serial"/>
+        </xsd:keyref>
+
+        <!-- Contrainte numéro 3 -->
+        <!-- Les produits doivent posséder un numéro de série unique -->
+        <xsd:key name="unicite_produit_catalogue">
+            <!-- On indexe les produits avec leur numéro de série -->
+            <xsd:selector xpath="./catalog/product"/>
+            <xsd:field xpath="@serial"/>
+        </xsd:key>
+        
+        <!-- Contrainte numéro 4 -->
+        <!-- Les clients référencé dans les commandes doivent etre présents dans l'élément customers -->
+        <xsd:keyref name="reference_customer_commande" refer="unicite_customer">
+            <xsd:selector xpath="./order"/>
+            <xsd:field xpath="@customer"/>
+        </xsd:keyref>
+
+        <!-- Contrainte numéro 5 -->
+        <!-- Chaque client possède un identifiant unique -->
+        <xsd:unique name="unicite_customer">
+            <!-- On indexe les clients par leur ID -->
+            <xsd:selector xpath="./customers/customer" />
+            <xsd:field xpath="@id" />
+        </xsd:unique>
+
+        <!-- ============================================================================================== -->
+
+    </xsd:element>
+
+    <!-- On définit le type order -->
+    <xsd:complexType name="order">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="product" type="product" />
+        </xsd:sequence>
+        <xsd:attribute name="date" type="xsd:date" />
+        <xsd:attribute name="time" type="xsd:time" />
+        <xsd:attribute name="customer" type="xsd:int" />
+    </xsd:complexType>
+    
+    <!-- On définit le type catalog -->
+    <xsd:complexType name="catalog">
+        <xsd:sequence>
+            <xsd:element name="product" type="product" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+        
+    <!-- On définit le product -->
+    <xsd:complexType name="product">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="serial" type="TypeSerial" use="required"/>
+                <xsd:attribute name="number" type="xsd:int" use="optional"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <!-- On définit le type TypeSerial -->
+    <xsd:simpleType name="TypeSerial">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{3}-[A-Z]{2}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <!-- On définit le type customers -->
+    <xsd:complexType name="customers">
+        <xsd:sequence>
+            <xsd:element name="customer" type="customer" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+        
+    <!-- On définit le type customer -->
+    <xsd:complexType name="customer">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:int" use="required"/>
+    </xsd:complexType>
+</xsd:schema> 
