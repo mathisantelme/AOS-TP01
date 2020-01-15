@@ -138,3 +138,84 @@ Pour que chaque client ai un identifiant unique, on utilise la meme méthode que
 </xsd:unique>
 ```
 *ex3/orders.xsd ligne 52*
+
+## Schemas et classe Java
+
+### Définition d'un schéma
+
+Dans cette première partie on définit un schéma xml qui permet de définir un agenda. Chaque évènement de l'agenda est constitué des informations suivantes:
+
+- un identifiant unique
+- une description textuelle
+- un lieu (texte)
+- une information temporelle qui correspondra à une des deux contraintes ci-dessous:
+    - une liste de valeurs décrivant des dates associées à des heures (norme **ISO** 8601, on utilisera le type fournit par **XML Schéma**)
+    - une structure spécifiant une récurrence temporelle du type *tout les **X** unité de chaque unité* suivit d'une heure. L'ordinal **X** est optionel (ex: *Tout les jeudis du mois*. Si **X** est absent cela signifie que l'expression porte sur l'ensemble des unités) L'unité correspond soit à un nom de jour soit à une unité calendaire (jour, semaine, mois, année).
+
+Pour ce qui est des premiers éléments, un `xsd:element` de type string suffit. Cependant l'information temporelle est plus complexe.
+
+Pour la première facon de stocker l'information on utilise le format `xsd:dateTime` (**YYYY-MM-DDThh:mm:ss**). Puisqu'un évènement peut etre sur plusieurs jours on définit le nombre d'occurence maximal comme illimité.
+
+```xml
+<xsd:element name="dateTime" type="xsd:dateTime" maxOccurs="unbounded"/>
+
+```
+
+Pour la récurrence temporelle on définit un type complexe qui stocke l'ordinal (premier ... de ...), l'occurence (jeudi) ainsi que le *step* (la nommenclature de cet élément est **très** suceptible de changer) qui correspond à la dernière unité de temps (mois). Voir l'exemple ci-dessous pour plus de clareté.
+
+```xml
+<xsd:complexType name="recurrenceType">
+        <xsd:choice>
+            <xsd:sequence>
+                <xsd:element name="ordinal"/>
+                <xsd:element name="occurence" type="xsd:string"/>
+                <xsd:element name="step" type="xsd:string"/>
+            </xsd:sequence>
+            
+            <xsd:sequence>
+                <xsd:element name="occurence" type="xsd:string"/>
+                <xsd:element name="step" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:choice>
+    </xsd:complexType>
+```
+
+*ex4/ressources/agenda.xsd ligne 36*
+
+
+---
+
+Ensuite on définit un fichier **XML** qui illustre les possibilités suivante du vocabulaire proposé:
+    
+1. *Concert d'Emilie Simon le 9 octobre 2014 à 20h à la Sirène (La Rochelle)*
+2. *Concert de Debussy les 8 et 9 décembre 2014 à 19h à la Coursive (La Rochelle)*
+3. *Tournoi de badminton tous les premiers samedi de chaque mois à la Halle des Sports de Bongraine (La Rochelle)*
+
+```xml
+<event>
+    <id>1</id>
+    <description>concert emilie simon</description>
+    <location>sirene</location>
+    <dateTime>2014-10-09T20:00:00</dateTime>
+</event>
+
+<event>
+    <id>2</id>
+    <description>concert debussy</description>
+    <location>coursive</location>
+    <dateTime>2014-12-08T19:00:00</dateTime>
+    <dateTime>2014-12-09T19:00:00</dateTime>
+</event>
+
+<event>
+    <id>3</id>
+    <description>tournoi badminton</description>
+    <location>Halle des Sports de Bongraine</location>
+    <recurrenceTime>
+        <ordinal>1</ordinal>
+        <occurence>jeudi</occurence>
+        <step>mois</step>
+    </recurrenceTime>
+</event>
+```
+*ex4/ressources/agenda.xml*

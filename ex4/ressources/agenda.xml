@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<agenda
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="agenda.xsd"
+>
+    <event>
+        <id>1</id>
+        <description>concert emilie simon</description>
+        <location>sirene</location>
+        <dateTime>2014-10-09T20:00:00</dateTime>
+    </event>
+
+    <event>
+        <id>2</id>
+        <description>concert debussy</description>
+        <location>coursive</location>
+        <dateTime>2014-12-08T19:00:00</dateTime>
+        <dateTime>2014-12-09T19:00:00</dateTime>
+    </event>
+
+    <event>
+        <id>3</id>
+        <description>tournoi badminton</description>
+        <location>Halle des Sports de Bongraine</location>
+        <recurrenceTime>
+            <ordinal>1</ordinal>
+            <occurence>jeudi</occurence>
+            <step>mois</step>
+        </recurrenceTime>
+    </event>
+
+</agenda>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+>
+
+    <!-- On définit le type agenda -->
+    <xsd:complexType name="agenda">
+        <xsd:sequence>
+            <xsd:element name="event" type="event" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+
+    <!-- On définit le type event -->
+    <xsd:complexType name="event">
+        <xsd:sequence>
+            <xsd:element name="id"/>
+            <xsd:element name="description" type="xsd:string"/>
+            <xsd:element name="location" type="xsd:string"/>
+
+            <!-- On ne peut choisir qu'une des deux facons de décrire la date -->
+            <xsd:choice>
+                <!-- Permet de stocker une date simple au format YYYY-MM-DDThh:mm:ss -->
+                <xsd:element name="dateTime" type="xsd:dateTime" maxOccurs="unbounded"/>
+
+                <!-- Permet de stocker une récurrence temporelle -->
+                <xsd:element name="recurrenceTime" type="recurrenceType" maxOccurs="1"/>
+            </xsd:choice>
+
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- On définit le type recurrenceType -->
+    <!-- Permet de stocker une récurrence temporelle -->
+    <xsd:complexType name="recurrenceType">
+        <xsd:choice>
+            <!-- ordinal présent -->
+            <xsd:sequence>
+                <xsd:element name="ordinal"/>
+                <!-- La première unité de temps -->
+                <xsd:element name="occurence" type="xsd:string"/>
+
+                <!-- la deuxième unité de temps -->
+                <xsd:element name="step" type="xsd:string"/>
+            </xsd:sequence>
+            
+            <!-- ordinal absent -->
+            <xsd:sequence>
+                <!-- La première unité de temps -->
+                <xsd:element name="occurence" type="xsd:string"/>
+
+                <!-- la deuxième unité de temps -->
+                <xsd:element name="step" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <!-- On définit l'élément racine -->
+    <xsd:element name="agenda" type="agenda"/>
+
+</xsd:schema>
